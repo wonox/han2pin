@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<meta name="description" content="漢字（日本漢字、簡体字、繁体字のいずれか）を入力すると、漢字（簡体字、繁体字、日本漢字）とそれのハングルヨミに変換します。なお、漢字のハングル読みで、韓国語訳ではありません。" lang="ja" />
+<title>From Chinese characters to convert Pinyin and Traditional and Simplified Chinese and Hangul </title>
+<script type="text/javascript" src="pinyin_json3.js" async="async"></script>
+<script>
+(function() {
+    my1();
+})();
+
+// フォームがサブミットされたら
+function my1() {
+   // 辞書がロードされるのを待つ
+   if (typeof(codes) == 'undefined') {
+        setTimeout(arguments.callee, 15);
+        return;
+      }
+   // フォームの値を取得する
+   var val = document.getElementById('my-text').value;
+   // var val = $('#my-form [name=my-text]').val(); // jqueryを使った場合
+   if (val == '') {removeall("result");};
+   // 一文字づつを配列に入れる
+   var ary = val.toArray();
+   var pinyin2 ="", simp2 ="", trad2="", japa2 ="", hungul2 ="";
+
+   for (var i = 0;i < ary.length; i++) {
+	var pinyin = codes[ary[i]]["pin"];
+	var simp = codes[ary[i]]["simp"];
+	var trad = codes[ary[i]]["trad"];
+	var japa = codes[ary[i]]["jap"];
+	var hungul = codes[ary[i]]["hun"];
+	var pinyin2 = pinyin2 + " " +  pinyin;
+	var simp2 = simp2 + simp;
+	var trad2 = trad2 + trad;
+	var japa2 = japa2 + japa;
+	var hungul2 = hungul2 + hungul;
+	}
+	
+   // 表示
+   var mArray = new Array(pinyin2,simp2,trad2,japa2,hungul2);
+   disp(mArray);
+
+   }
+   
+function disp(mArray) {
+   var ele;
+   var ele = document.getElementById("result")
+   if (ele) {removeall("result")};
+   if (!document.createElement) return;
+/*
+   var element = document.createElement('div'); 
+   ele = ele.appendChild(element);
+*/   
+   var shurui = new Array ("pinyin","Simplified(簡体字)","Traditional(繁体字)","Japanese(日本漢字)","Hungul(ハングルヨミ)");
+   for (var i = 0;i < mArray.length; i++) {
+	var str = document.createTextNode(shurui[i] + ": " + mArray[i]);	// 生成する要素の値（文字列）
+	ele.appendChild(str);					// 生成する要素の作成（要素に値を追加）
+	ele.appendChild(document.createElement("br"));
+   }
+	document.body.appendChild(ele);				// このページ (document.body) の最後に生成した要素を追加
+ }
+   
+// 一文字ずつを配列に入れる。	
+String.prototype.toArray = function() {
+    var array = new Array;
+    for (var i=0 ; i < this.length; i++) {
+        array.push(this.charAt(i));
+    }
+    return array;
+};
+
+function removeall (id){
+   var aNode = document.getElementById(id);
+   // aNode.parentNode.removeChild(aNode);
+   
+   for (var i =aNode.childNodes.length-1; i>=0; i--) {
+   aNode.removeChild(aNode.childNodes[i]);
+   }
+   
+}
+
+</script>
+
+</head>
+<body>
+<h1>From Chinese characters to convert Pinyin and Traditional and Simplified Chinese and Hangul</h1>
+<form name="my-form" id="my-form" method="post">
+<input type="text" name="my-text" id="my-text" value="一橋大學附屬圖書館" onkeyup="my1()" />
+</form>
+<div id="result"></div>
+<p>作成： <a href="https://plus.google.com/104220576373973879770/posts?rel=author">Wataru ONO</a></p>
+<script type="text/javascript">
+
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-39063802-1']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+
+</script>
+</body>
+</html>
